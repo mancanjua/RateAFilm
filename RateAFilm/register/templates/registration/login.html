@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login - Rate A Movie
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block subtitle %} Login {% endblock %}
+
+{% block content %}
+     <form method="post" class="from-group">
+	{% csrf_token %}
+	{{form|crispy}}
+	<p>Don't have an account? Register <a href="/register">here</a></p>
+	<button type="submit" class="btn btn-success">Login</button>	
+    </form>
+{% endblock %}
