@@ -21,6 +21,7 @@ from register import views as vr
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
+    path('films/', views.list_films),
     path('register', vr.register, name="register"),
     path('', include('django.contrib.auth.urls'))
 ]
