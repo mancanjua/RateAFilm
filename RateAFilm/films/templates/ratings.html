@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}Ratings{% endblock %}
+
+{% block subtitle %}My ratings{% endblock %}
+  {% block content %}
+			{% for row in ratings %}
+			
+			    <dt><b>Film: </b>{{row.film}}</dt>
+			    <dd><b>Rating: </b>{{row.rating}}</dd>
+			    <dd><b>Date: </b>{{row.date}}</dd>
+			{% endfor %}
+  {% endblock %}

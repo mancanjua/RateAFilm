@@ -1,5 +1,7 @@
 #encoding:utf-8
 from djongo import models
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator,MaxValueValidator,URLValidator
     
     
 class Genre(models.Model):
@@ -27,7 +29,14 @@ class Film(models.Model):
     def __str__(self):
         return self.name
 
+class Rating(models.Model):
+    _id = models.ObjectIdField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    film = models.ForeignKey(Film, on_delete=models.CASCADE)
+    date = models.DateField(null=True, blank=True)
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    def __str__(self):
+        return (str(self.user)+"->"+str(self.film)+"->"+str(self.rating))
 
 
 
-# Create your models here.

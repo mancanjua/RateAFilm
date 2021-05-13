@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from films.models import Film
+from films.models import Film, Rating
+from django.conf import settings
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 def index(request): 
     return render(request,'index.html')
@@ -7,4 +10,19 @@ def index(request):
 def list_films(request):
     films=Film.objects.all()
     return render(request,'films.html', {'films':films})
+def show_film(request, pk):
+
+    film = get_object_or_404(Film,id=pk)
+
+
+    return render(request,'film.html', {'film':film})
 # Create your views here.
+
+
+def list_user_ratings(request):
+    if not request.user.is_authenticated:
+        return redirect('%s?next=%s' % ('/login', request.path))
+    user=request.user
+    ratings=Rating.objects.filter(user=user)
+
+    return render(request,'ratings.html',{'ratings':ratings})
