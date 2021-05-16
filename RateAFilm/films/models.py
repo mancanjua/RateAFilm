@@ -22,7 +22,7 @@ class Film(models.Model):
 #    _id = models.ObjectIdField()
     name = models.CharField(max_length=100)
     releaseDate = models.DateField(null=True, blank=True)
-    country= models.ForeignKey('Country',on_delete=models.CASCADE, null=True)
+    country = models.ForeignKey('Country',on_delete=models.CASCADE, null=True)
     genres = models.ManyToManyField(Genre)
     objects=models.DjongoManager()
     

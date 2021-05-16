@@ -25,5 +25,6 @@ urlpatterns = [
     path('films/<int:pk>', views.show_film, name='film-detail'),
     path('ratings/', views.list_user_ratings),
     path('register', vr.register, name="register"),
-    path('', include('django.contrib.auth.urls'))
+    path('', include('django.contrib.auth.urls')),
+    path('import', views.upload_films, name='upload')
 ]
