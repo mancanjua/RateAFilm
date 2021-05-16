@@ -6,7 +6,7 @@
 {% block subtitle %} Data upload {% endblock %}
 
 {% block content %}
-    <form method="POST" class="form-group">
+    <form method="POST" class="form-group" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-success">Upload</button>

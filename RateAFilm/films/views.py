@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from films.models import Film, Rating
+from films.models import Film, Rating, Genre
 from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from films.forms import UploadFileForm
+import csv, io, json
 
 def index(request): 
     return render(request,'index.html')
@@ -33,7 +34,7 @@ def upload_films(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            populate_data(request.FILES['movies'], request.FILES['ratings'])
+            populate_data(request)
             return redirect('/')
     else:
         form = UploadFileForm()
@@ -41,5 +42,20 @@ def upload_films(request):
     return render(request, 'file_upload.html', {'form': form})
 
 
-def populate_data(movies, ratings):
-    pass
+def populate_data(request):
+    with io.TextIOWrapper(request.FILES['movies'].file, encoding='utf8') as movies_csv:
+        reader = csv.DictReader(movies_csv)
+        for row in reader:
+            genres = [genre['name'] for genre in json.loads(row['genres'].replace("'", '"'))]
+            movies_genres = []
+            for genre in genres:
+                g = Genre.objects.get(genreName=genre)
+
+                if g is None:
+                    g = Genre.objects.create(genreName=genre)
+
+                movies_genres.append(g)
+
+
+def test(request):
+    genres = ['prueba1', 'prueba2']
