@@ -1,24 +1,22 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from films.models import Film, Rating, Genre
-from django.conf import settings
+from films.models import Film, Genre, Rating
 from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
 from films.forms import UploadFileForm
 import csv, io, json
 
+
 def index(request): 
-    return render(request,'index.html')
+    return render(request, 'index.html')
+
 
 def list_films(request):
-    films=Film.objects.all()
-    return render(request,'films.html', {'films':films})
+    films = Film.objects.all()
+    return render(request, 'films.html', {'films': films})
+
+
 def show_film(request, pk):
-
-    film = get_object_or_404(Film,id=pk)
-
-
-    return render(request,'film.html', {'film':film})
-# Create your views here.
+    film = get_object_or_404(Film, id=pk)
+    return render(request, 'film.html', {'film': film})
 
 
 def list_user_ratings(request):
@@ -27,7 +25,7 @@ def list_user_ratings(request):
     user = request.user
     ratings = Rating.objects.filter(user=user)
 
-    return render(request, 'ratings.html', {'ratings':ratings})
+    return render(request, 'ratings.html', {'ratings': ratings})
 
 
 def upload_films(request):
@@ -44,18 +42,44 @@ def upload_films(request):
 
 def populate_data(request):
     with io.TextIOWrapper(request.FILES['movies'].file, encoding='utf8') as movies_csv:
+        Genre.objects.all().delete()
+        Film.objects.all().delete()
+
         reader = csv.DictReader(movies_csv)
+
         for row in reader:
-            genres = [genre['name'] for genre in json.loads(row['genres'].replace("'", '"'))]
-            movies_genres = []
-            for genre in genres:
-                g = Genre.objects.get(genreName=genre)
+            if row['adult'] != 'False' and row['adult'] != 'True':
+                continue
 
-                if g is None:
-                    g = Genre.objects.create(genreName=genre)
+            f = Film.objects.filter(id=row['id']).count()
 
-                movies_genres.append(g)
+            if f == 0:
+                country = row['production_countries']
+                releaseDate = row['release_date']
+                name = row['original_title']
+                id = row['id']
 
+                genres = [(genre['id'], genre['name']) for genre in json.loads(row['genres'].replace("'", '"'))]
+                movies_genres = []
+                for genre in genres:
+                    try:
+                        g = Genre.objects.get(id=genre[0])
 
-def test(request):
-    genres = ['prueba1', 'prueba2']
+                    except Genre.DoesNotExist:
+                        g = Genre.objects.create(id=genre[0], genreName=genre[1])
+
+                    movies_genres.append(g)
+
+                Film.objects.create(id=id, name=name, releaseDate=releaseDate, country=country, genres=movies_genres)
+
+    with io.TextIOWrapper(request.FILES['ratings'].file, encoding='utf8') as ratings_csv:
+        Rating.objects.all().delete()
+
+        reader = csv.DictReader(ratings_csv)
+
+        for row in reader:
+            user = row['userId']
+            film = row['movieId']
+            rating = row['rating']
+
+            Rating.objects.create(user=user, film=film, rating=rating)

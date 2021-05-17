@@ -10,23 +10,18 @@ class Genre(models.Model):
     objects = models.DjongoManager()
 
     def __str__(self):
-        return self.genreName   
+        return self.genreName
 
-
-class Country(models.Model):
-    id = models.PositiveIntegerField(primary_key=True)
-    name = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.name
+    def __getitem__(self, name):
+        return getattr(self, name)
 
 
 class Film(models.Model):
     id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(max_length=100)
-    releaseDate = models.DateField(null=True, blank=True)
-    country = models.EmbeddedField(model_container=Country)
-    genres = models.ArrayReferenceField(to=Genre)
+    releaseDate = models.CharField(max_length=10000)
+    country = models.CharField(max_length=200)
+    genres = models.ArrayField(model_container=Genre)
     objects = models.DjongoManager()
     
     def __str__(self):
@@ -36,8 +31,8 @@ class Film(models.Model):
 class Rating(models.Model):
     user = models.PositiveIntegerField()
     film = models.PositiveIntegerField()
-    date = models.DateField(null=True, blank=True)
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
+    objects = models.DjongoManager()
 
     def __str__(self):
         return str(self.user) + "->" + str(self.film) + "->" + str(self.rating)
