@@ -6,7 +6,7 @@
 
 {% block subtitle %}Film list{% endblock %}
   {% block content %}
-			{% for row in films %}
+			{% for row in films_page %}
 			
 			    <dt><b>Title: </b>{{row.name}}</dt>
 			    <dd><b>Release date: </b>{{row.releaseDate}}</dd>
@@ -14,4 +14,29 @@
                  <a href="/films/{{ row.id }}">{{ row.name }}</a>
                  </dd>
 			{% endfor %}
+
+      {% if films_page.has_next or films_page.has_previous %}
+
+    <ul class="pagination">
+        {% if films_page.has_previous %}
+            <li><a href="?page={{ films_page.previous_page_number }}" class="btn btnpages"><i
+                    class="glyphicon glyphicon-chevron-left"></i></a></li>
+        {% endif %}
+        {% for page in films_page.paginator.page_range %}
+            <li class="{% if films_page.number == page %}active{% endif %}">
+                <a class="btn btnpages" href="?page={{ page }}">{{ page }}</a></li>
+        {% endfor %}
+
+        {% if films_page.has_next %}
+            <li>
+                <a href="?page={{ films_page.next_page_number }}" class="btn btnpages">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+
+
+
+{% endif %}
   {% endblock %}

@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from films.models import Film, Genre, Rating
 from django.shortcuts import redirect
-from films.forms import UploadFileForm
+from films.forms import UploadFileForm, CreateRating
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import csv, io, json
+
 
 
 def index(request): 
@@ -11,7 +13,11 @@ def index(request):
 
 def list_films(request):
     films = Film.objects.all()
-    return render(request, 'films.html', {'films': films})
+    paginator = Paginator(films, 1000)  # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    films_page = paginator.get_page(page_number)
+    return render(request, 'films.html', {'films_page': films_page})
 
 
 def show_film(request, pk):
@@ -23,9 +29,25 @@ def list_user_ratings(request):
     if not request.user.is_authenticated:
         return redirect('%s?next=%s' % ('/login', request.path))
     user = request.user
-    ratings = Rating.objects.filter(user=user)
+    ratings = Rating.objects.all().filter(user=user.id)
 
     return render(request, 'ratings.html', {'ratings': ratings})
+
+def create_rating(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('%s?next=%s' % ('/login', request.path))
+    formulario = CreateRating()
+    film_name = Film.objects.get(id=pk)
+    if request.method == 'POST':
+        formulario = CreateRating(request.POST)
+        if formulario.is_valid():
+            film = get_object_or_404(Film, id=pk)
+            user = request.user
+            rating = formulario.cleaned_data['rating']
+            new_rating = Rating.objects.create(user=user.id, film=film.id, rating=rating)
+            return redirect('/')
+    return render(request, 'create_rating.html', {'formulario': formulario, 'film_name': film_name})
+
 
 
 def upload_films(request):

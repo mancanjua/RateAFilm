@@ -23,6 +23,7 @@ urlpatterns = [
     path('', views.index),
     path('films/', views.list_films, name='film-list'),
     path('films/<int:pk>', views.show_film, name='film-detail'),
+    path('films/<int:pk>/create_rating', views.create_rating, name='create-rating'),
     path('ratings/', views.list_user_ratings),
     path('register', vr.register, name="register"),
     path('', include('django.contrib.auth.urls')),

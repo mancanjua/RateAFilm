@@ -32,6 +32,7 @@ class Rating(models.Model):
     user = models.PositiveIntegerField()
     film = models.PositiveIntegerField()
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
+
     objects = models.DjongoManager()
 
     def __str__(self):

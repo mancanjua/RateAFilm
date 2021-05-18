@@ -10,11 +10,11 @@
 			
 			    <dt><b>Title: </b>{{film.name}}</dt>
 			    <dd><b>Release date: </b>{{film.releaseDate}}</dd>
-			    <dd><b>Country: </b>{{film.country.name}}</dd>
-			    <dd> <b>Genres: </b>
-			    {% for gen in film.genres.all %}
-			    	{{gen.genreName}} 
-			    {% endfor %}
-			    </dd>		 		    
+			    <dd><b>Country: </b>{{film.country}}</dd>
+			    <dd><b>Genres: </b>{{film.genres}}</dd>
+                <dd>
+                 <a href="/films/{{film.id}}/create_rating">Rate this film</a>
+                 </dd>
+
 
   {% endblock %}
