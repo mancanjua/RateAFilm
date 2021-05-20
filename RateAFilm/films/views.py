@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from films.forms import UploadFileForm, CreateRating
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import csv, io, json
+from py2neo import Graph, Node
 
 
 
@@ -45,6 +46,9 @@ def create_rating(request, pk):
             user = request.user
             rating = formulario.cleaned_data['rating']
             new_rating = Rating.objects.create(user=user.id, film=film.id, rating=rating)
+            graph = Graph(password="film")
+            node1 = Node("Rating", user=user.id, film=film.id, rating=rating)
+            graph.create(node1)
             return redirect('/')
     return render(request, 'create_rating.html', {'formulario': formulario, 'film_name': film_name})
 
@@ -98,10 +102,12 @@ def populate_data(request):
         Rating.objects.all().delete()
 
         reader = csv.DictReader(ratings_csv)
-
+        graph = Graph(password="film")
         for row in reader:
             user = row['userId']
             film = row['movieId']
             rating = row['rating']
-
             Rating.objects.create(user=user, film=film, rating=rating)
+
+            node1 = Node("Rating", user=user, film=film, rating=rating)
+            graph.create(node1)

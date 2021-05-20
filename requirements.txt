@@ -2,3 +2,4 @@ django
 djongo
 django-crispy-forms
 neo4j-doc-manager
+py2neo
