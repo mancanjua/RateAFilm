@@ -21,6 +21,7 @@ class Film(models.Model):
     name = models.CharField(max_length=100)
     releaseDate = models.CharField(max_length=10000)
     country = models.CharField(max_length=200)
+    img = models.CharField(max_length=2000)
     genres = models.ArrayField(model_container=Genre)
     objects = models.DjongoManager()
     
@@ -32,7 +33,6 @@ class Rating(models.Model):
     user = models.PositiveIntegerField()
     film = models.PositiveIntegerField()
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
-
     objects = models.DjongoManager()
 
     def __str__(self):

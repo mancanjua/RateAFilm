@@ -1,14 +1,11 @@
 {% extends "base.html" %}
 
-
-
 {% block title %}Ratings{% endblock %}
 
 {% block subtitle %}My ratings{% endblock %}
-  {% block content %}
-			{% for row in ratings %}
-			
-			    <dt><b>Film: </b>{{row.film}}</dt>
-			    <dd><b>Rating: </b>{{row.rating}}</dd>
-			{% endfor %}
-  {% endblock %}
+	{% block content %}
+		{% for row in elements %}
+			<dt><a href="/films/{{ row.0.id }}">{{ row.0.name }}</a></dt>
+			<dd><b>Rating: </b>{{row.1.rating}}</dd>
+		{% endfor %}
+	{% endblock %}

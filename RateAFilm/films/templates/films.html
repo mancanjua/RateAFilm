@@ -5,16 +5,24 @@
 {% block title %}Films{% endblock %}
 
 {% block subtitle %}Film list{% endblock %}
-  {% block content %}
-			{% for row in films_page %}
-			
-			    <dt><b>Title: </b>{{row.name}}</dt>
-			    <dd><b>Release date: </b>{{row.releaseDate}}</dd>
-                <dd>
-                 <a href="/films/{{ row.id }}">{{ row.name }}</a>
-                 </dd>
-			{% endfor %}
-
+{% block content %}
+    <div class="row row--grid">
+        {% for row in films_page %}
+			<div class="col-6 col-sm-4 col-lg-3 col-xl-2" >
+                <div class="card" style="position: relative; display: -ms-flexbox; display: flex; -ms-flex-direction: column; flex-direction: column; min-width: 0; word-wrap: break-word; background-color: #fff; background-clip: border-box; border: 1px solid rgba(0,0,0,.125);">
+                    <!-- <a href="/films/{{ row.id }}" class="card__cover" style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 100%; border-radius: 16px; overflow: hidden; position: relative; z-index: 1;">
+                        <img src="https://www.themoviedb.org/t/p/w220_and_h330_face{{ row.img }}" alt style="width:100px; height:100px; background: url(http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png) no-repeat scroll 0 0;">
+                    </a> -->
+                    <h3 class="card__title" style="font-family: 'Rubik', sans-serif; font-weight: 500; font-size: 16px; color: #fff; margin-top: 10px; margin-bottom: 5px; transition: 0.5s; display: block; width: 100%; overflow: hidden; white-space: nowrap; -o-text-overflow: ellipsis; text-overflow: ellipsis; word-wrap: break-word;">
+                        <a href="/films/{{ row.id }}">{{ row.name }}</a>
+                    </h3>
+                    <ul class="card__list" style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center; width: 100%; margin: 0; padding: 0; list-style: none;">
+                        <li>{{ row.releaseDate }}</li>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
       {% if films_page.has_next or films_page.has_previous %}
 
     <ul class="pagination">

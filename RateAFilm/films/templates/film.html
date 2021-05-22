@@ -1,20 +1,14 @@
 {% extends "base.html" %}
 
-
-
 {% block title %}Films{% endblock %}
 
 {% block subtitle %}Film: {{film.name}}{% endblock %}
-  {% block content %}
-
-			
-			    <dt><b>Title: </b>{{film.name}}</dt>
-			    <dd><b>Release date: </b>{{film.releaseDate}}</dd>
-			    <dd><b>Country: </b>{{film.country}}</dd>
-			    <dd><b>Genres: </b>{{film.genres}}</dd>
-                <dd>
-                 <a href="/films/{{film.id}}/create_rating">Rate this film</a>
-                 </dd>
-
-
-  {% endblock %}
+{% block content %}
+    <dt><b>Title: </b>{{film.name}}</dt>
+    <dd><b>Release date: </b>{{film.releaseDate}}</dd>
+    <dd><b>Country: </b>{{countries}}</dd>
+    <dd><b>Genres: </b>{{genres}}</dd>
+    <dd>
+    <a href="/films/{{film.id}}/create_rating">Rate this film</a>
+    </dd>
+{% endblock %}

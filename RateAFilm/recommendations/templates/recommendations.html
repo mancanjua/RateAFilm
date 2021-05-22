@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Recommendations - Rate A Film{% endblock %}
+
+{% block subtitle %} Recommendations {% endblock %}
+
+{% block content %}
+    {% for row in films %}
+        <dd>
+            <a href="/films/{{ row.0 }}">{{ row.1 }}</a>
+        </dd>
+    {% endfor %}
+{% endblock %}

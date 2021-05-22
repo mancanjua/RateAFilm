@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 
-
-
 {% block title %}Ratings{% endblock %}
 
 {% block subtitle %}Rate {{film_name}}{% endblock %}
-  {% block content %}
-			<form id="formulario" method="post" action=''>{% csrf_token %}
-    		{{formulario}}
-    		<input type='submit' value='Create rating'/>
-    	</form>
-  {% endblock %}
+{% block content %}
+	<form id="formulario" method="post" action=''>{% csrf_token %}
+		{{formulario}}
+		<input type='submit' value='Create rating'/>
+	</form>
+{% endblock %}

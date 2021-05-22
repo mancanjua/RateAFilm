@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from films import views
 from register import views as vr
+from recommendations import views as vrem
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +28,6 @@ urlpatterns = [
     path('ratings/', views.list_user_ratings),
     path('register', vr.register, name="register"),
     path('', include('django.contrib.auth.urls')),
-    path('import', views.upload_films, name='upload')
+    path('import', views.upload_films, name='upload'),
+    path('recommendations', vrem.recommend, name='recommendations')
 ]

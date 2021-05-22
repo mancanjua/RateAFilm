@@ -5,20 +5,39 @@
         <title>{% block title %}Rate a Film{% endblock %}</title>
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">Rate A Film</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/films">Film list</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/ratings">My ratings</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/recommendations">Recommendations</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/import">Import data</a>
+                    </li>
+                </ul>
+                {% if user.is_authenticated %}
+                    <a href="/logout" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Logout</a>
+                {% else %}
+                    <a href="/login" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Login</a>
+                {% endif %}
+            </div>
+        </nav>
         <div class="main">
             <div class="row justify-content-center">
                 <div class="col-8">
-                <h2>Index</h2>
-                    <h4>
-                        <nav class="uk-navbar mt-2">
-		                <ul class="uk-navbar-nav">
-                        <dd class="mt-0 mb-4"><a href="/">Home</a></dd>
-                        <dd class="mt-0 mb-4"><a href="/films">Films list</a></dd>
-                        <dd class="mt-0 mb-4"><a href="/ratings">My ratings list</a></dd>
-                        <dd class="mt-0 mb-4"><a href="/import">Import data</a></dd>
-		                </ul>
-                    </nav>
-                </h4>
                     <h1 class="mt-2">{% block subtitle %}{% endblock %}</h1>
                     <hr class="mt-0 mb-4">
                     {% block content %}
