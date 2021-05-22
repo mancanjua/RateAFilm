@@ -1,3 +1,4 @@
+from RateAFilm import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from films.models import Film, Genre, Rating
 from django.shortcuts import redirect
@@ -55,7 +56,7 @@ def create_rating(request, pk):
             user = request.user
             rating = formulario.cleaned_data['rating']
 
-            graph = Graph(password="film")
+            graph = Graph(scheme=settings.NEO4J_SCHEME, host=settings.NEO4J_HOST, port=settings.NEO4J_PORT, user=settings.NEO4J_USER, password=settings.NEO4J_PASSWORD)
             matcher = NodeMatcher(graph)
 
             ratings = Rating.objects.filter(user=user.id, film=film.id).count()
@@ -137,7 +138,8 @@ def populate_ratings(request):
         Rating.objects.all().delete()
 
         reader = csv.DictReader(ratings_csv)
-        graph = Graph(password="film")
+        graph = Graph(scheme=settings.NEO4J_SCHEME, host=settings.NEO4J_HOST, port=settings.NEO4J_PORT,
+                      user=settings.NEO4J_USER, password=settings.NEO4J_PASSWORD)
         matcher = NodeMatcher(graph)
 
         graph.run('MATCH (n) DETACH DELETE n')

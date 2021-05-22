@@ -1,3 +1,4 @@
+from RateAFilm import settings
 from django.shortcuts import render
 from django.shortcuts import redirect
 from py2neo import Graph
@@ -9,7 +10,8 @@ def recommend(request):
         return redirect('%s?next=%s' % ('/login', request.path))
 
     user_id = request.user.id
-    graph = Graph(password='film')
+    graph = Graph(scheme=settings.NEO4J_SCHEME, host=settings.NEO4J_HOST, port=settings.NEO4J_PORT,
+                  user=settings.NEO4J_USER, password=settings.NEO4J_PASSWORD)
     films = graph.run('MATCH (u1:User {id:' + str(user_id) + """})-[r:RATES]->(f:Film)
                        WITH u1, avg(r.rating) AS u1_mean
                     
